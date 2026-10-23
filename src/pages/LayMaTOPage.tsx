@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from "react";
-import { PackageCheck, QrCode, ScanLine, Search } from "lucide-react";
+import { ImageUp, PackageCheck, QrCode, Search } from "lucide-react";
 import EmbeddedQRScanner, {
   type ScanMode,
 } from "../components/EmbeddedQRScanner";
@@ -123,8 +123,8 @@ export const LayMaTOPage = () => {
               disabled={loading}
               className="btn btn-outline min-h-12 w-full gap-2 rounded-xl"
             >
-              <ScanLine className="h-5 w-5" aria-hidden="true" />
-              Quét QR
+              <ImageUp className="h-5 w-5" aria-hidden="true" />
+              Đọc QR từ ảnh
             </button>
           </div>
         </form>
