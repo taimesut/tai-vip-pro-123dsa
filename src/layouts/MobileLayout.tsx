@@ -110,7 +110,7 @@ export const MobileLayout = ({
           <div className="space-y-5">
             <div className="flex items-center justify-between border-b border-base-200 pb-4">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary to-secondary font-bold text-primary-content shadow-md">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary font-semibold text-primary-content">
                   <Package className="h-5 w-5" />
                 </div>
                 <div>

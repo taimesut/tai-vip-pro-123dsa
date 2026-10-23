@@ -59,8 +59,8 @@ const manifest = {
   scope: './',
   display: 'standalone',
   orientation: 'portrait',
-  background_color: '#F53D2D',
-  theme_color: '#F53D2D',
+  background_color: '#FAF9F5',
+  theme_color: '#FAF9F5',
   lang: 'vi',
   icons: [
     ...(icon72  ? [{ src: icon72,  sizes: '72x72',   type: 'image/png', purpose: 'any' }] : []),
