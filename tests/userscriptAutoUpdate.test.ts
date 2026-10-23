@@ -50,14 +50,16 @@ test("userscript exposes QR generator and keeps header controls unobstructed", a
   assert.match(qrPageSource, /Tạo mã QR/);
 });
 
-test("embedded scanner releases camera when the mobile app leaves foreground", async () => {
+test("embedded scanner reads QR from images without live camera", async () => {
   const scannerSource = await readSource("../src/components/EmbeddedQRScanner.tsx");
 
-  assert.match(scannerSource, /visibilitychange/);
-  assert.match(scannerSource, /pagehide/);
-  assert.match(scannerSource, /ops-fte:panel-close/);
-  assert.match(scannerSource, /document\.visibilityState === "hidden"/);
-  assert.match(scannerSource, /stopScanner\(\);\s*\n\s*onClose\(\);/);
+  assert.match(scannerSource, /decodeBarcodeImage/);
+  assert.match(scannerSource, /accept="image\\/\\*"/);
+  assert.match(scannerSource, /không mở camera và không quét realtime/);
+  assert.doesNotMatch(
+    scannerSource,
+    /getUserMedia|requestCameraStream|decodeFromStream|visibilitychange/,
+  );
 });
 
 test("userscript release workflow builds, verifies and deploys the userscript", async () => {
