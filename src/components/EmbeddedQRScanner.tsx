@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { ImageUp, LoaderCircle, X } from "lucide-react";
 import { showToast } from "./Toast";
 import { decodeBarcodeImage } from "../utils/barcode";
@@ -21,12 +21,6 @@ export default function EmbeddedQRScanner({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handledScanRef = useRef(false);
   const [decodingImage, setDecodingImage] = useState(false);
-
-  useEffect(() => {
-    if (!open) return;
-    handledScanRef.current = false;
-    setDecodingImage(false);
-  }, [mode, open]);
 
   const finishScan = useCallback(
     (rawValue: string) => {
@@ -69,6 +63,7 @@ export default function EmbeddedQRScanner({
 
   const openImagePicker = () => {
     if (decodingImage) return;
+    handledScanRef.current = false;
     fileInputRef.current?.click();
   };
 
