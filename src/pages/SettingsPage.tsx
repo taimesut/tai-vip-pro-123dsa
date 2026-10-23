@@ -14,13 +14,11 @@ import {
 } from "lucide-react";
 import { MobileActionBar } from "../components/MobileActionBar";
 import { PageHeader } from "../components/PageHeader";
-import { SocEtaEditor } from "../components/SocEtaEditor";
 import { SocGroupEditor } from "../components/SocGroupEditor";
 import { StationSelect } from "../components/StationSelect";
 import { showToast } from "../components/Toast";
 import {
   getConfigs,
-  normalizeSocEtaMinutesConfig,
   saveConfigs,
   type AppConfig,
 } from "../utils/config";
@@ -89,9 +87,6 @@ export const SettingsPage = () => {
   const [hubState, setHubState] = useState<LoadState>({ status: "idle" });
   const [hubRetryToken, setHubRetryToken] = useState(0);
   const [groupSocs, setGroupSocs] = useState<Record<string, string[]>>({});
-  const [socEtaMinutes, setSocEtaMinutes] = useState<
-    Record<string, Record<string, number>>
-  >(() => normalizeSocEtaMinutesConfig(initialConfig.soc_eta_minutes));
   const [groupAdjustmentMessage, setGroupAdjustmentMessage] = useState("");
 
   const selectedSoc = useMemo(
@@ -102,10 +97,6 @@ export const SettingsPage = () => {
     () =>
       selectedSocId ? getExternalSocs(catalog, selectedSocId) : [],
     [catalog, selectedSocId],
-  );
-  const selectedSocEtaMinutes = useMemo(
-    () => (selectedSocId ? socEtaMinutes[selectedSocId] || {} : {}),
-    [selectedSocId, socEtaMinutes],
   );
   const canSave =
     catalogState.status === "ready" &&
@@ -233,12 +224,11 @@ export const SettingsPage = () => {
         hubs,
         groupSocs,
         logUrl,
-        socEtaMinutes,
       });
       saveConfigs(nextConfig);
       savedConfigRef.current = nextConfig;
       setGroupAdjustmentMessage("");
-      showToast("Đã lưu cấu hình SOC, Hub và ETA tuyến.", "success");
+      showToast("Đã lưu cấu hình SOC và Hub.", "success");
     } catch (error) {
       showToast(getErrorMessage(error), "error");
     }
@@ -290,9 +280,6 @@ export const SettingsPage = () => {
           typeof imported.ggsheet_log_url === "string"
             ? imported.ggsheet_log_url
             : "";
-        const importedSocEtaMinutes = normalizeSocEtaMinutesConfig(
-          imported.soc_eta_minutes,
-        );
 
         hubRequestRef.current += 1;
         setSelectedSocId(importedSocId);
@@ -300,7 +287,6 @@ export const SettingsPage = () => {
         setHubState({ status: "loading" });
         setHubRetryToken((current) => current + 1);
         setGroupSocs(nextGroups);
-        setSocEtaMinutes(importedSocEtaMinutes);
         setLogUrl(importedLogUrl);
         setGroupAdjustmentMessage(
           "Đã đối chiếu cấu hình nhập với dữ liệu SOC/Hub tích hợp.",
@@ -331,7 +317,6 @@ export const SettingsPage = () => {
     setHubs([]);
     setHubState({ status: "idle" });
     setGroupSocs({});
-    setSocEtaMinutes({});
     setGroupAdjustmentMessage("");
     setLogUrl("");
     showToast("Đã xóa toàn bộ cấu hình OPS FTE.", "info");
@@ -505,37 +490,6 @@ export const SettingsPage = () => {
             )}
           </div>
         )}
-      </section>
-
-      <section className="app-surface space-y-4 p-4 sm:p-5" aria-labelledby="soc-eta-heading">
-        <div>
-          <h2 id="soc-eta-heading" className="font-bold">
-            ETA dự kiến từ SOC đã chọn
-          </h2>
-          <p className="mt-1 text-sm leading-relaxed text-base-content/65">
-            Cấu hình thời gian di chuyển chuẩn từ SOC hiện tại đến từng SOC khác.
-            Mỗi SOC nguồn có một bộ ETA riêng và được giữ lại khi đổi SOC.
-          </p>
-        </div>
-
-        <SocEtaEditor
-          sourceSoc={selectedSoc}
-          options={externalSocs}
-          values={selectedSocEtaMinutes}
-          disabled={!selectedSocId || catalogState.status !== "ready"}
-          onChange={(nextValues) => {
-            if (!selectedSocId) return;
-            setSocEtaMinutes((current) => {
-              const next = { ...current };
-              if (Object.keys(nextValues).length > 0) {
-                next[selectedSocId] = nextValues;
-              } else {
-                delete next[selectedSocId];
-              }
-              return next;
-            });
-          }}
-        />
       </section>
 
       <section className="app-surface space-y-4 p-4 sm:p-5" aria-labelledby="soc-group-heading">

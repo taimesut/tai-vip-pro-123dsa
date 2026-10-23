@@ -5,7 +5,6 @@ Bộ công cụ hỗ trợ vận hành SPX/SOC. Bản phân phối chính là us
 ## Chức năng chính
 
 - Kiểm tra sót nội tỉnh và ngoại tỉnh, hỗ trợ mốc COT.
-- Kiểm tra xe/FMS, ETA và hành trình SOC.
 - Tra cứu TO, tạo/hiển thị QR.
 - Đọc QR/Barcode bằng cách chọn ảnh hoặc chụp ảnh; không quét camera realtime.
 - Theo dõi volume/tổng quan Hub nội bộ.
