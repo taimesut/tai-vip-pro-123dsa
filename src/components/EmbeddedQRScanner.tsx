@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { ImageUp, LoaderCircle, X } from "lucide-react";
+import { Camera, ImageUp, LoaderCircle, X } from "lucide-react";
 import { showToast } from "./Toast";
 import { decodeBarcodeImage } from "../utils/barcode";
 
@@ -18,7 +18,8 @@ export default function EmbeddedQRScanner({
   onScan,
   onClose,
 }: EmbeddedQRScannerProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
   const handledScanRef = useRef(false);
   const [decodingImage, setDecodingImage] = useState(false);
 
@@ -53,7 +54,7 @@ export default function EmbeddedQRScanner({
       showToast("Đã đọc mã từ ảnh.", "success");
     } catch {
       showToast(
-        "Không tìm thấy mã QR/Barcode trong ảnh. Hãy chọn ảnh rõ hơn và thử lại.",
+        "Không tìm thấy mã QR/Barcode trong ảnh. Hãy chọn hoặc chụp ảnh rõ hơn rồi thử lại.",
         "warning",
       );
     } finally {
@@ -61,10 +62,10 @@ export default function EmbeddedQRScanner({
     }
   };
 
-  const openImagePicker = () => {
-    if (decodingImage) return;
+  const openInput = (input: HTMLInputElement | null) => {
+    if (decodingImage || !input) return;
     handledScanRef.current = false;
-    fileInputRef.current?.click();
+    input.click();
   };
 
   if (!open || !mode) return null;
@@ -80,9 +81,17 @@ export default function EmbeddedQRScanner({
       aria-label="Đọc mã QR hoặc Barcode từ ảnh"
     >
       <input
-        ref={fileInputRef}
+        ref={imageInputRef}
         type="file"
         accept="image/*"
+        className="hidden"
+        onChange={(event) => void handleImage(event)}
+      />
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
         className="hidden"
         onChange={(event) => void handleImage(event)}
       />
@@ -103,28 +112,46 @@ export default function EmbeddedQRScanner({
           </span>
           <h2 className="mt-4 text-lg font-black">{title}</h2>
           <p className="mt-2 text-sm leading-relaxed text-base-content/60">
-            Chọn ảnh đã chụp hoặc ảnh QR/Barcode trong thiết bị. OPS FTE chỉ đọc
-            ảnh một lần, không mở camera và không quét realtime.
+            Chọn ảnh có sẵn hoặc chụp một ảnh mới. OPS FTE chỉ đọc ảnh sau khi
+            bạn chọn/chụp xong, không mở camera realtime và không quét liên tục.
           </p>
         </div>
 
-        <button
-          type="button"
-          disabled={decodingImage}
-          onClick={openImagePicker}
-          className="btn btn-primary mt-6 min-h-12 w-full gap-2 rounded-xl font-bold"
-        >
-          {decodingImage ? (
-            <LoaderCircle className="h-5 w-5 animate-spin" />
-          ) : (
-            <ImageUp className="h-5 w-5" />
-          )}
-          {decodingImage ? "Đang đọc mã..." : "Chọn ảnh để đọc mã"}
-        </button>
+        <div className="mt-6 grid gap-2 sm:grid-cols-2">
+          <button
+            type="button"
+            disabled={decodingImage}
+            onClick={() => openInput(imageInputRef.current)}
+            className="btn btn-primary min-h-12 w-full gap-2 rounded-xl font-bold"
+          >
+            {decodingImage ? (
+              <LoaderCircle className="h-5 w-5 animate-spin" />
+            ) : (
+              <ImageUp className="h-5 w-5" />
+            )}
+            Chọn ảnh
+          </button>
 
-        <p className="mt-3 text-center text-xs text-base-content/50">
-          Hỗ trợ QR Code, Code 128/39, EAN, UPC, Data Matrix và ITF.
-        </p>
+          <button
+            type="button"
+            disabled={decodingImage}
+            onClick={() => openInput(cameraInputRef.current)}
+            className="btn btn-outline min-h-12 w-full gap-2 rounded-xl font-bold"
+          >
+            <Camera className="h-5 w-5" />
+            Chụp ảnh
+          </button>
+        </div>
+
+        {decodingImage ? (
+          <p className="mt-3 text-center text-xs font-semibold text-primary">
+            Đang đọc mã từ ảnh...
+          </p>
+        ) : (
+          <p className="mt-3 text-center text-xs text-base-content/50">
+            Hỗ trợ QR Code, Code 128/39, EAN, UPC, Data Matrix và ITF.
+          </p>
+        )}
       </section>
     </div>
   );

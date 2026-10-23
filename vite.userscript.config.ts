@@ -3,14 +3,8 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
 const defaultUserscriptVersion = "0.4.1";
-const defaultUserscriptUpdateUrl =
-  "https://taimesut.github.io/OPS-FTE/ops-fte.user.js";
-
 const userscriptVersion =
   process.env.OPS_FTE_USERSCRIPT_VERSION?.trim() || defaultUserscriptVersion;
-const userscriptUpdateUrl =
-  process.env.OPS_FTE_USERSCRIPT_UPDATE_URL?.trim() ||
-  defaultUserscriptUpdateUrl;
 
 const metadata = `// ==UserScript==
 // @name         OPS FTE
@@ -26,11 +20,10 @@ const metadata = `// ==UserScript==
 // @connect      script.googleusercontent.com
 // @connect      docs.google.com
 // @connect      accounts.google.com
-// @updateURL    ${userscriptUpdateUrl}
-// @downloadURL  ${userscriptUpdateUrl}
 // ==/UserScript==`;
 
-const runtimeShim = `var process = globalThis.process || { env: { NODE_ENV: "production" } };`;
+const runtimeShim =
+  `var process = globalThis.process || { env: { NODE_ENV: "production" } };`;
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],

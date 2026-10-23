@@ -2,10 +2,7 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#020617" />
     <title>OPS FTE - Đọc QR từ ảnh</title>
   </head>
@@ -15,25 +12,21 @@
         <div class="scanner-icon" aria-hidden="true">▦</div>
         <h1 id="scanner-title">Đọc QR / Barcode từ ảnh</h1>
         <p class="scanner-help">
-          Chọn ảnh đã chụp trong thiết bị. Trang này không mở camera và không
-          quét realtime.
+          Chọn ảnh có sẵn hoặc chụp ảnh mới. Trang này không mở camera realtime
+          và không quét liên tục.
         </p>
-
-        <p id="status" role="status" aria-live="polite">
-          Đang chờ kết nối với ứng dụng...
-        </p>
+        <p id="status" role="status" aria-live="polite">Đang chờ kết nối với ứng dụng...</p>
 
         <input id="image-input" type="file" accept="image/*" hidden />
+        <input id="camera-input" type="file" accept="image/*" capture="environment" hidden />
 
-        <div class="actions">
-          <button id="select-image" class="primary" type="button" disabled>
-            Chọn ảnh để đọc mã
-          </button>
-          <button id="close" type="button">Đóng</button>
+        <div class="actions two-column">
+          <button id="select-image" class="primary" type="button" disabled>Chọn ảnh</button>
+          <button id="take-photo" type="button" disabled>Chụp ảnh</button>
         </div>
+        <button id="close" class="close-action" type="button">Đóng</button>
       </section>
     </main>
-
     <script type="module" src="/src/scanner.ts"></script>
   </body>
 </html>

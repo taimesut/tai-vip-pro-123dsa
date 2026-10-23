@@ -16,10 +16,8 @@ dist-ssr/
 gas-dist/
 launcher-dist/
 scanner-dist/
-firefox-dist/
 userscript-dist/
 *.zip
-*.xpi
 *.rar
 
 # Local/runtime files

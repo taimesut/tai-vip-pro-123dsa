@@ -3,33 +3,17 @@
   font-family: Inter, system-ui, sans-serif;
   background: #020617;
 }
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 100dvh;
-}
-
-button {
-  font: inherit;
-}
-
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100dvh; }
+button { font: inherit; }
 .scanner-shell {
   display: grid;
   min-height: 100dvh;
   place-items: center;
-  padding: max(20px, env(safe-area-inset-top))
-    max(16px, env(safe-area-inset-right))
-    max(20px, env(safe-area-inset-bottom))
-    max(16px, env(safe-area-inset-left));
-  background:
-    radial-gradient(circle at top, rgb(14 165 233 / 0.2), transparent 42%),
-    #020617;
+  padding: max(20px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+    max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  background: radial-gradient(circle at top, rgb(14 165 233 / 0.2), transparent 42%), #020617;
 }
-
 .scanner-card {
   width: min(100%, 420px);
   padding: 28px;
@@ -39,7 +23,6 @@ button {
   box-shadow: 0 24px 80px rgb(0 0 0 / 0.45);
   text-align: center;
 }
-
 .scanner-icon {
   display: grid;
   width: 64px;
@@ -52,20 +35,8 @@ button {
   font-size: 38px;
   font-weight: 900;
 }
-
-h1 {
-  margin: 18px 0 0;
-  color: #f8fafc;
-  font-size: 22px;
-}
-
-.scanner-help {
-  margin: 10px 0 0;
-  color: #94a3b8;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
+h1 { margin: 18px 0 0; color: #f8fafc; font-size: 22px; }
+.scanner-help { margin: 10px 0 0; color: #94a3b8; font-size: 14px; line-height: 1.6; }
 #status {
   min-height: 46px;
   margin: 22px 0 0;
@@ -77,14 +48,9 @@ h1 {
   font-weight: 700;
   line-height: 1.45;
 }
-
-.actions {
-  display: grid;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.actions button {
+.actions { display: grid; gap: 10px; margin-top: 16px; }
+.actions.two-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.actions button, .close-action {
   min-height: 48px;
   border: 1px solid rgb(255 255 255 / 0.15);
   border-radius: 14px;
@@ -93,19 +59,13 @@ h1 {
   font-weight: 800;
   cursor: pointer;
 }
-
-.actions button.primary {
-  border-color: #0ea5e9;
-  background: #0ea5e9;
-  color: #082f49;
-}
-
-.actions button:disabled {
-  cursor: not-allowed;
-  opacity: 0.45;
-}
-
-.actions button:focus-visible {
+.actions button.primary { border-color: #0ea5e9; background: #0ea5e9; color: #082f49; }
+.close-action { width: 100%; margin-top: 10px; }
+.actions button:disabled { cursor: not-allowed; opacity: 0.45; }
+.actions button:focus-visible, .close-action:focus-visible {
   outline: 3px solid #fbbf24;
   outline-offset: 3px;
+}
+@media (max-width: 380px) {
+  .actions.two-column { grid-template-columns: 1fr; }
 }

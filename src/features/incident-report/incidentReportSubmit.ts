@@ -34,22 +34,6 @@ interface GmXmlHttpRequestDetails {
 
 type GmXmlHttpRequest = (details: GmXmlHttpRequestDetails) => unknown;
 
-interface FirefoxRuntimeResponse {
-  ok: boolean;
-  status?: number;
-  statusText?: string;
-  responseText?: string;
-  error?: string;
-}
-
-interface FirefoxRuntime {
-  sendMessage(message: {
-    type: "ops-fte:webhook-post";
-    url: string;
-    body: string;
-  }): Promise<FirefoxRuntimeResponse>;
-}
-
 declare const google:
   | {
       script?: {
@@ -60,11 +44,6 @@ declare const google:
 
 declare const GM_xmlhttpRequest: GmXmlHttpRequest | undefined;
 
-declare const browser:
-  | {
-      runtime?: FirefoxRuntime;
-    }
-  | undefined;
 
 const errorMessage = (error: unknown): string => {
   if (error instanceof Error && error.message) return error.message;
@@ -87,12 +66,6 @@ const getAppsScriptRunner = (): GoogleScriptRunner | null => {
 const getUserscriptRequest = (): GmXmlHttpRequest | null => {
   if (typeof GM_xmlhttpRequest !== "function") return null;
   return GM_xmlhttpRequest;
-};
-
-const getFirefoxRuntime = (): FirefoxRuntime | null => {
-  if (typeof browser === "undefined") return null;
-  if (typeof browser.runtime?.sendMessage !== "function") return null;
-  return browser.runtime;
 };
 
 const parseSubmitResult = (raw: string): IncidentSubmitResult => {
@@ -140,31 +113,6 @@ const submitThroughAppsScript = (
       .withFailureHandler((error) => reject(new Error(errorMessage(error))))
       .submitIncidentReport(payload);
   });
-
-const submitThroughFirefoxExtension = async (
-  runtime: FirefoxRuntime,
-  url: string,
-  payload: IncidentLogPayload,
-): Promise<IncidentSubmitResult> => {
-  const response = await runtime.sendMessage({
-    type: "ops-fte:webhook-post",
-    url,
-    body: JSON.stringify(payload),
-  });
-
-  if (!response?.ok) {
-    throw new Error(response?.error || "Không thể kết nối Apps Script.");
-  }
-
-  const status = response.status ?? 0;
-  if (status < 200 || status >= 300) {
-    throw new Error(
-      `Apps Script phản hồi HTTP ${status}${response.statusText ? ` ${response.statusText}` : ""}.`,
-    );
-  }
-
-  return parseSubmitResult(response.responseText || "");
-};
 
 const submitThroughUserscript = (
   request: GmXmlHttpRequest,
@@ -229,11 +177,6 @@ export const submitIncidentReport = async (
     throw new Error(
       "Chưa cài đặt Link Google Sheet nhận Log và không chạy trong Apps Script.",
     );
-  }
-
-  const firefoxRuntime = getFirefoxRuntime();
-  if (firefoxRuntime) {
-    return submitThroughFirefoxExtension(firefoxRuntime, url, payload);
   }
 
   const userscriptRequest = getUserscriptRequest();

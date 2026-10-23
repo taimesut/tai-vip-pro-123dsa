@@ -5,41 +5,33 @@ import test from "node:test";
 const readSource = (path: string) =>
   readFile(new URL(path, import.meta.url), "utf8");
 
-const updateUrl = "https://taimesut.github.io/OPS-FTE/ops-fte.user.js";
-
-test("userscript metadata includes a stable Violentmonkey update endpoint", async () => {
+test("userscript metadata is self-contained for manual Violentmonkey install", async () => {
   const source = await readSource("../vite.userscript.config.ts");
-
   assert.match(source, /OPS_FTE_USERSCRIPT_VERSION/);
-  assert.match(source, /OPS_FTE_USERSCRIPT_UPDATE_URL/);
-  assert.match(source, /@updateURL\s+\$\{userscriptUpdateUrl\}/);
-  assert.match(source, /@downloadURL\s+\$\{userscriptUpdateUrl\}/);
-  assert.ok(source.includes(updateUrl));
+  assert.match(source, /fileName:\s*\(\) => "ops-fte\.user\.js"/);
+  assert.match(source, /@grant\s+GM_xmlhttpRequest/);
+  assert.doesNotMatch(source, /@updateURL|@downloadURL|OPS_FTE_USERSCRIPT_UPDATE_URL/);
 });
 
 test("userscript can call and confirm the Google Apps Script incident webhook", async () => {
   const metadata = await readSource("../vite.userscript.config.ts");
-  const submitSource = await readSource(
-    "../src/features/incident-report/incidentReportSubmit.ts",
-  );
-
+  const submitSource = await readSource("../src/features/incident-report/incidentReportSubmit.ts");
   assert.match(metadata, /@grant\s+GM_xmlhttpRequest/);
   assert.match(metadata, /@connect\s+script\.google\.com/);
   assert.match(metadata, /@connect\s+script\.googleusercontent\.com/);
   assert.match(submitSource, /GM_xmlhttpRequest/);
   assert.match(submitSource, /parseSubmitResult/);
   assert.match(submitSource, /response\.responseText/);
+  assert.doesNotMatch(submitSource, /Firefox|browser\.runtime|ops-fte:webhook-post/);
 });
 
 test("userscript exposes QR generator and keeps header controls unobstructed", async () => {
-  const [userscriptSource, appSource, layoutSource, qrPageSource] =
-    await Promise.all([
-      readSource("../src/userscript.tsx"),
-      readSource("../src/UserscriptApp.tsx"),
-      readSource("../src/layouts/MobileLayout.tsx"),
-      readSource("../src/pages/TaoMaQRPage.tsx"),
-    ]);
-
+  const [userscriptSource, appSource, layoutSource, qrPageSource] = await Promise.all([
+    readSource("../src/userscript.tsx"),
+    readSource("../src/UserscriptApp.tsx"),
+    readSource("../src/layouts/MobileLayout.tsx"),
+    readSource("../src/pages/TaoMaQRPage.tsx"),
+  ]);
   assert.doesNotMatch(userscriptSource, /const closeButton = document\.createElement/);
   assert.match(userscriptSource, /<UserscriptApp onRequestClose=\{close\}/);
   assert.match(appSource, /path="\/tao-ma-qr"/);
@@ -50,27 +42,23 @@ test("userscript exposes QR generator and keeps header controls unobstructed", a
   assert.match(qrPageSource, /Tạo mã QR/);
 });
 
-test("embedded scanner reads QR from images without live camera", async () => {
+test("QR reader offers choose-image and take-photo without realtime scanning", async () => {
   const scannerSource = await readSource("../src/components/EmbeddedQRScanner.tsx");
-
+  assert.match(scannerSource, /Chọn ảnh/);
+  assert.match(scannerSource, /Chụp ảnh/);
+  assert.match(scannerSource, /capture="environment"/);
   assert.match(scannerSource, /decodeBarcodeImage/);
-  assert.match(scannerSource, /accept="image\\/\\*"/);
-  assert.match(scannerSource, /không mở camera và không quét realtime/);
-  assert.doesNotMatch(
-    scannerSource,
-    /getUserMedia|requestCameraStream|decodeFromStream|visibilitychange/,
-  );
+  assert.doesNotMatch(scannerSource, /getUserMedia|requestCameraStream|decodeFromStream|visibilitychange/);
 });
 
-test("userscript release workflow builds, verifies and deploys the userscript", async () => {
-  const workflow = await readSource("../.github/workflows/userscript-release.yml");
-
-  assert.match(workflow, /branches:\s*\n\s*- main/);
+test("GitHub Action is manual-only and uploads one Violentmonkey userscript artifact", async () => {
+  const workflow = await readSource("../.github/workflows/build-userscript.yml");
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.doesNotMatch(workflow, /\bpush:/);
   assert.match(workflow, /node-version:\s*24/);
   assert.match(workflow, /npm run test:userscript/);
   assert.match(workflow, /npm run build:userscript/);
-  assert.match(workflow, /0\.4\.\$\{GITHUB_RUN_NUMBER\}/);
-  assert.ok(workflow.includes(updateUrl));
-  assert.match(workflow, /actions\/upload-pages-artifact@v3/);
-  assert.match(workflow, /actions\/deploy-pages@v4/);
+  assert.match(workflow, /userscript-dist\/ops-fte\.user\.js/);
+  assert.match(workflow, /actions\/upload-artifact@v4/);
+  assert.doesNotMatch(workflow, /configure-pages|deploy-pages|firefox/i);
 });
