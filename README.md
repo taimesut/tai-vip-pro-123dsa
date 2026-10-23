@@ -7,7 +7,6 @@ Bộ công cụ hỗ trợ vận hành SPX/SOC. Bản phân phối chính là us
 - Kiểm tra sót nội tỉnh và ngoại tỉnh, hỗ trợ mốc COT.
 - Tra cứu TO, tạo/hiển thị QR.
 - Đọc QR/Barcode bằng cách chọn ảnh hoặc chụp ảnh; không quét camera realtime.
-- Theo dõi volume/tổng quan Hub nội bộ.
 - Tạo biên bản sự vụ và ghi log qua Apps Script.
 
 ## Build local
