@@ -1,75 +1,72 @@
-# React + TypeScript + Vite
+# OPS FTE
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bộ công cụ hỗ trợ vận hành SPX/SOC, dùng chung một codebase React + TypeScript cho web, userscript và Firefox extension.
 
-Currently, two official plugins are available:
+## Chức năng chính
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Kiểm tra sót nội tỉnh và ngoại tỉnh, hỗ trợ mốc COT.
+- Kiểm tra xe/FMS, ETA và hành trình SOC.
+- Tra cứu TO, tạo/hiển thị QR.
+- Theo dõi volume/tổng quan Hub nội bộ.
+- Tạo biên bản sự vụ và ghi log qua Apps Script.
+- Cấu hình SOC và các tham số vận hành dùng chung.
 
-## React Compiler
+## Công nghệ
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + TypeScript + Vite
+- Tailwind CSS / DaisyUI
+- Google Apps Script
+- Userscript chạy trực tiếp trên SPX
+- Firefox WebExtension
 
-## Expanding the ESLint configuration
+## Bắt đầu
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm ci
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Kiểm tra toàn bộ phần source trước khi merge/release:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run check
 ```
+
+Dọn toàn bộ artifact sinh ra khi build:
+
+```bash
+npm run clean
+```
+
+## Build
+
+| Mục tiêu | Lệnh | Output |
+| --- | --- | --- |
+| Web/PWA | `npm run build` | `dist/` |
+| Userscript | `npm run build:userscript` | `userscript-dist/` |
+| Firefox | `npm run build:firefox` | `firefox-dist/` |
+| Launcher | `npm run build:launcher` | `launcher-dist/` |
+| Scanner | `npm run build:scanner` | `dist/scanner/` |
+| GAS bundle | `npm run bundle:gas` | `gas-dist/code.gs` |
+
+Firefox có hướng dẫn riêng tại [FIREFOX_EXTENSION.md](./FIREFOX_EXTENSION.md).
+
+## Cấu trúc repo
+
+```text
+src/
+  components/       UI dùng chung
+  pages/            các màn hình nghiệp vụ
+  utils/            API, parser và logic nghiệp vụ
+firefox/            file nền và version cho Firefox extension
+gas/                source Google Apps Script
+public/             icon/manifest tĩnh
+tests/              test Node cho logic và integration wiring
+.github/workflows/  build/release userscript và Firefox
+```
+
+## Quy ước repository
+
+Các thư mục build như `dist/`, `firefox-dist/`, `userscript-dist/`, `launcher-dist/`, `scanner-dist/` và `gas-dist/` không được commit. Artifact release được tạo lại từ source bằng npm/GitHub Actions.
+
+Các thư mục/tooling AI cục bộ như `.agents/`, `skills-lock.json` và tài liệu sinh tự động trong `docs/superpowers/` cũng không thuộc source runtime.

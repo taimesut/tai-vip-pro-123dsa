@@ -7,15 +7,33 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Dependencies
+node_modules/
+
+# Generated build output
+dist/
+dist-ssr/
+gas-dist/
+launcher-dist/
+scanner-dist/
+firefox-dist/
+userscript-dist/
+*.zip
+*.xpi
+*.rar
+
+# Local/runtime files
 *.local
+
+# Local AI/dev artifacts
+.agents/
+skills-lock.json
+docs/superpowers/
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
@@ -23,8 +41,5 @@ dist-ssr
 *.sln
 *.sw?
 
-# Icon generation script (dev only)
+# Dev-only helper
 generate-icons.mjs
-
-# Generated Apps Script bundle
-gas-dist/
