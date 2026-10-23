@@ -76,7 +76,7 @@ export const HomePage = () => {
       <div className="app-surface w-full max-w-md space-y-5 p-4 text-center sm:p-6">
         {/* Header */}
         <div className="space-y-1">
-          <h1 className="text-3xl font-black tracking-tight text-primary">
+          <h1 className="home-title">
             HIHI HAHA
           </h1>
         </div>

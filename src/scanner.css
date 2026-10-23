@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=EB+Garamond:wght@400;500&display=swap');
+
 :root {
   color-scheme: dark;
   font-family: Inter, system-ui, sans-serif;
@@ -68,4 +70,98 @@ h1 { margin: 18px 0 0; color: #f8fafc; font-size: 22px; }
 }
 @media (max-width: 380px) {
   .actions.two-column { grid-template-columns: 1fr; }
+}
+
+:root {
+  color-scheme: light;
+  font-family: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+  background: #faf9f5;
+  color: #141413;
+  --scanner-canvas: #faf9f5;
+  --scanner-card: #181715;
+  --scanner-card-raised: #252320;
+  --scanner-ink: #faf9f5;
+  --scanner-muted: #c2beb5;
+  --scanner-coral: #cc785c;
+  --scanner-coral-active: #a9583e;
+  --scanner-line: #49463f;
+}
+
+.scanner-shell {
+  background: var(--scanner-canvas);
+}
+
+.scanner-card {
+  border-color: var(--scanner-line);
+  border-radius: 16px;
+  background: var(--scanner-card);
+  color: var(--scanner-ink);
+  box-shadow: 0 8px 24px rgb(20 20 19 / 0.12);
+}
+
+.scanner-icon {
+  width: 56px;
+  height: 56px;
+  border: 1px solid rgb(204 120 92 / 0.38);
+  border-radius: 14px;
+  background: rgb(204 120 92 / 0.14);
+  color: #e4a48b;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+h1 {
+  color: var(--scanner-ink);
+  font-family: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.scanner-help { color: var(--scanner-muted); }
+
+#status {
+  border: 1px solid var(--scanner-line);
+  border-radius: 12px;
+  background: var(--scanner-card-raised);
+  color: var(--scanner-ink);
+  font-weight: 600;
+}
+
+.actions button,
+.close-action {
+  border: 1px solid var(--scanner-line);
+  border-radius: 10px;
+  background: var(--scanner-card-raised);
+  color: var(--scanner-ink);
+  font-weight: 600;
+}
+
+.actions button.primary {
+  border-color: var(--scanner-coral);
+  background: var(--scanner-coral);
+  color: #141413;
+}
+
+.actions button.primary:hover:not(:disabled) {
+  border-color: var(--scanner-coral-active);
+  background: var(--scanner-coral-active);
+  color: #fff;
+}
+
+.actions button:focus-visible,
+.close-action:focus-visible {
+  outline: 3px solid #e4a48b;
+  outline-offset: 3px;
+}
+
+@media (max-width: 380px) {
+  .scanner-card { padding: 24px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

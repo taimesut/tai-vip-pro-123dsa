@@ -1,104 +1,313 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=EB+Garamond:wght@400;500&display=swap');
 @import "tailwindcss";
 @plugin "daisyui";
 
 @theme {
   --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --color-primary: #F53D2D;
-  --color-primary-content: #ffffff;
-  --color-secondary: #FF6A00;
-  --color-secondary-content: #ffffff;
+  --font-display: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+  --color-primary: #cc785c;
+  --color-primary-content: #141413;
+  --color-secondary: #6c6a64;
+  --color-secondary-content: #faf9f5;
+}
+
+:root,
+[data-ops-fte-theme-root] {
+  color-scheme: light;
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+  --color-canvas: #faf9f5;
+  --color-surface-soft: #f5f0e8;
+  --color-surface-card: #efe9de;
+  --color-surface-cream-strong: #e8e0d2;
+  --color-surface-dark: #181715;
+  --color-surface-dark-soft: #1f1e1b;
+  --color-surface-dark-elevated: #252320;
+  --color-ink: #141413;
+  --color-body: #3d3d3a;
+  --color-muted: #6c6a64;
+  --color-muted-soft: #8e8b82;
+  --color-primary: #cc785c;
+  --color-primary-text: #955038;
+  --color-primary-active: #a9583e;
+  --color-primary-content: #141413;
+  --color-secondary: #6c6a64;
+  --color-secondary-content: #faf9f5;
+  --color-hairline: #e6dfd8;
+  --color-hairline-soft: #ebe6df;
+  --color-success: #397a50;
+  --color-warning: #8a6414;
+  --color-error: #b44343;
+  --app-gutter-mobile: 0.75rem;
+  --app-gutter-tablet: 1rem;
+  --app-gutter-desktop: 1.5rem;
+  --color-base-100: var(--color-canvas);
+  --color-base-200: var(--color-surface-soft);
+  --color-base-300: var(--color-surface-card);
+  --color-base-content: var(--color-ink);
+  --p: 14 51% 58%;
+  --pc: 63 8% 8%;
+  --s: 50 4% 42%;
+  --sc: 60 10% 98%;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --color-base-100: var(--color-canvas);
+  --color-base-200: var(--color-surface-soft);
+  --color-base-300: var(--color-surface-card);
+  --color-base-content: var(--color-ink);
+  --color-primary: #cc785c;
+  --color-primary-content: #141413;
+  --color-secondary: #6c6a64;
+  --color-secondary-content: #faf9f5;
+  --p: 14 51% 58%;
+  --pc: 63 8% 8%;
+  --s: 50 4% 42%;
+  --sc: 60 10% 98%;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-base-100: var(--color-surface-dark);
+  --color-base-200: var(--color-surface-dark-soft);
+  --color-base-300: var(--color-surface-dark-elevated);
+  --color-base-content: #faf9f5;
+  --color-primary: #d58a6d;
+  --color-primary-text: #e4a48b;
+  --color-primary-active: #b96d50;
+  --color-primary-content: #141413;
+  --color-secondary: #a09d96;
+  --color-secondary-content: #181715;
+  --color-hairline: #3a3833;
+  --color-hairline-soft: #302e2a;
+  --color-success: #7cc28d;
+  --color-warning: #e1b558;
+  --color-error: #ee8a83;
+  --p: 19 53% 63%;
+  --pc: 63 8% 8%;
+  --s: 40 5% 61%;
+  --sc: 60 10% 9%;
 }
 
 body {
   margin: 0;
-  font-family: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: "Be Vietnam Pro", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-synthesis: none;
-  line-height: 1.45;
+  line-height: 1.5;
   text-rendering: optimizeLegibility;
 }
 
-/* Force SPX Shopee Orange primary brand color across all themes */
-:root {
-  --p: 11 91% 57%;
-  --pc: 0 0% 100%;
-  --s: 25 100% 50%;
-  --sc: 0 0% 100%;
-  --app-gutter-mobile: 0.75rem;
-  --app-gutter-tablet: 1rem;
-  --app-gutter-desktop: 1.5rem;
+[data-theme="dark"] body {
+  background: var(--color-surface-dark);
+  color: #faf9f5;
 }
 
-[data-theme="light"] {
-  --color-primary: #F53D2D;
-  --color-primary-content: #ffffff;
-  --color-secondary: #FF6A00;
-  --color-secondary-content: #ffffff;
+html,
+body,
+#root {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
-[data-theme="dark"] {
-  --color-primary: #FF5722;
-  --color-primary-content: #ffffff;
-  --color-secondary: #FF8F00;
-  --color-secondary-content: #ffffff;
+html { overflow-x: clip; }
+
+button,
+a,
+input,
+select,
+textarea { touch-action: manipulation; }
+
+input,
+select,
+textarea { font-size: 0.9375rem; }
+
+label,
+.label-text { font-weight: 600; }
+
+.app-shell { isolation: isolate; }
+.app-main { min-width: 0; }
+
+.app-page {
+  width: 100%;
+  max-width: 80rem;
+  min-width: 0;
+  margin-inline: auto;
+  padding: 1.25rem 0.75rem calc(1.5rem + env(safe-area-inset-bottom));
 }
 
-/* Custom utility overrides */
+.app-page-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+.app-page-description {
+  max-width: 60rem;
+  margin-top: 0.5rem;
+  color: var(--color-muted);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.app-page-header {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.875rem;
+  border-bottom: 1px solid var(--color-hairline);
+  padding-bottom: 1rem;
+}
+
+.app-page-actions {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.app-page-actions > * { min-width: 0; }
+
+.app-icon-badge {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, currentColor 13%, transparent);
+  border-radius: 0.75rem;
+}
+
+.app-icon-badge svg { width: 1.25rem; height: 1.25rem; }
+
+.app-section-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.app-section-description {
+  margin-top: 0.25rem;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.app-surface {
+  min-width: 0;
+  border: 1px solid var(--color-hairline);
+  border-radius: 0.75rem;
+  background: var(--color-base-100);
+  box-shadow: 0 1px 2px rgb(20 20 19 / 0.035);
+}
+
+.break-safe { overflow-wrap: anywhere; word-break: break-word; }
+
+.mobile-action-bar {
+  position: sticky;
+  bottom: 0.5rem;
+  z-index: 30;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 1px solid var(--color-hairline);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--color-base-100) 96%, transparent);
+  padding: 0.75rem;
+  box-shadow: 0 5px 16px rgb(20 20 19 / 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.settings-page { padding-bottom: max(7rem, env(safe-area-inset-bottom)); }
+
+.home-title {
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+/* Keep the older Apps Script HTML bundle visually aligned until it is rebuilt. */
+.app-shell h1.text-3xl.font-black.text-primary {
+  color: var(--color-ink) !important;
+  font-family: var(--font-display) !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.menu .bg-gradient-to-tr {
+  background-image: none !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-primary-content) !important;
+  box-shadow: none !important;
+}
+
+.text-primary { color: var(--color-primary-text) !important; }
+
 .btn-primary {
-  background-color: var(--color-primary, #F53D2D) !important;
-  border-color: var(--color-primary, #F53D2D) !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;
+  border-color: var(--color-primary) !important;
+  background: var(--color-primary) !important;
+  color: var(--color-primary-content) !important;
+  font-weight: 600 !important;
 }
 
-.btn-primary:hover {
-  background-color: #D73223 !important;
-  border-color: #D73223 !important;
+.btn-primary:hover:not(:disabled) {
+  border-color: var(--color-primary-active) !important;
+  background: var(--color-primary-active) !important;
+  color: #fff !important;
 }
 
-.text-primary {
-  color: var(--color-primary, #F53D2D) !important;
+.menu a.bg-primary {
+  border: 1px solid var(--color-hairline);
+  background: var(--color-base-300) !important;
+  color: var(--color-base-content) !important;
+  box-shadow: none !important;
 }
 
-.bg-primary {
-  background-color: var(--color-primary, #F53D2D) !important;
-}
+.menu a.bg-primary:hover { background: var(--color-base-200) !important; }
 
 .bg-primary\/10 {
-  background-color: rgba(245, 61, 45, 0.1) !important;
+  background-color: color-mix(in srgb, var(--color-primary) 12%, var(--color-base-100)) !important;
 }
 
 .bg-primary\/15 {
-  background-color: rgba(245, 61, 45, 0.15) !important;
+  background-color: color-mix(in srgb, var(--color-primary) 16%, var(--color-base-100)) !important;
 }
 
 .border-primary {
-  border-color: var(--color-primary, #F53D2D) !important;
+  border-color: color-mix(in srgb, var(--color-primary) 55%, var(--color-hairline)) !important;
 }
 
 .checkbox-primary:checked {
-  background-color: var(--color-primary, #F53D2D) !important;
-  border-color: var(--color-primary, #F53D2D) !important;
+  border-color: var(--color-primary-active) !important;
+  background-color: var(--color-primary-active) !important;
 }
 
-/* Typography contrast improvements */
-label, .label-text {
-  font-weight: 600;
-}
-
-input, select, textarea {
-  font-size: 0.9375rem; /* 15px for easy reading */
-}
+.app-surface,
+.card,
+.modal-box,
+.dropdown-content { border-color: var(--color-hairline); }
 
 @media print {
-  body * {
-    visibility: hidden;
-  }
-  .print\:shadow-none, .print\:shadow-none * {
-    visibility: visible;
-  }
+  body * { visibility: hidden; }
+  .print\:shadow-none,
+  .print\:shadow-none * { visibility: visible; }
   .print\:shadow-none {
     position: absolute;
     left: 0;
@@ -110,209 +319,34 @@ input, select, textarea {
   }
 }
 
-/* Glowing Aura Effect */
-.aura {
-  position: relative;
-}
-
-.aura-rainbow {
-  background: linear-gradient(
-    135deg,
-    #f53d2d,
-    #ff6a00,
-    #ffbe00,
-    #00c853,
-    #2196f3,
-    #9c27b0,
-    #f53d2d
-  );
-  background-size: 300% 300%;
-  animation: aura-shift 6s ease infinite;
-  border-radius: 1.5rem;
-  padding: 2px;
-}
-
-@keyframes aura-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Safe area inset for mobile sticky bars */
-.safe-bottom {
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
-}
-
-.safe-bottom-margin {
-  margin-bottom: max(0.75rem, env(safe-area-inset-bottom));
-}
+.safe-bottom { padding-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
+.safe-bottom-margin { margin-bottom: max(0.75rem, env(safe-area-inset-bottom)); }
 
 @media (max-width: 767px) {
-  .mobile-page {
-    padding-inline: var(--app-gutter-mobile);
-  }
+  .mobile-page { padding-inline: var(--app-gutter-mobile); }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .mobile-page {
-    padding-inline: var(--app-gutter-tablet);
-  }
+  .mobile-page { padding-inline: var(--app-gutter-tablet); }
 }
 
 @media (min-width: 1024px) {
-  .mobile-page {
-    padding-inline: var(--app-gutter-desktop);
-  }
-}
-
-html,
-body,
-#root {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-}
-
-html {
-  overflow-x: clip;
-}
-
-.app-shell {
-  isolation: isolate;
-}
-
-.app-main {
-  min-width: 0;
-}
-
-.app-page {
-  width: 100%;
-  max-width: 80rem;
-  min-width: 0;
-  margin-inline: auto;
-  padding: 1rem 0.75rem calc(1.5rem + env(safe-area-inset-bottom));
-}
-
-.app-page-title {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  font-size: 1.5rem;
-  line-height: 1.15;
-  font-weight: 900;
-  letter-spacing: -0.025em;
-}
-
-.app-page-description {
-  max-width: 60rem;
-  margin-top: 0.375rem;
-  color: color-mix(in srgb, currentColor 62%, transparent);
-  font-size: 0.8125rem;
-  line-height: 1.45;
-}
-
-.app-page-header {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 0.875rem;
-  border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
-  padding-bottom: 1rem;
-}
-
-.app-page-actions {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.app-page-actions > * {
-  min-width: 0;
-}
-
-.app-icon-badge {
-  display: grid;
-  width: 2.5rem;
-  height: 2.5rem;
-  place-items: center;
-  border-radius: 0.875rem;
-}
-
-.app-icon-badge svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-.app-section-title {
-  min-width: 0;
-  overflow-wrap: anywhere;
-  font-size: 1.0625rem;
-  line-height: 1.25;
-  font-weight: 900;
-  letter-spacing: -0.015em;
-}
-
-.app-section-description {
-  margin-top: 0.125rem;
-  color: color-mix(in srgb, currentColor 62%, transparent);
-  font-size: 0.75rem;
-  line-height: 1.4;
-}
-
-.app-surface {
-  min-width: 0;
-  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
-  border-radius: 1rem;
-  background: var(--color-base-100, #fff);
-  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
-}
-
-.break-safe {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
-
-.mobile-action-bar {
-  position: sticky;
-  bottom: 0.5rem;
-  z-index: 30;
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 0.5rem;
-  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
-  border-radius: 1rem;
-  background: color-mix(in srgb, var(--color-base-100, #fff) 94%, transparent);
-  padding: 0.75rem;
-  box-shadow: 0 14px 32px rgb(15 23 42 / 0.14);
-  backdrop-filter: blur(14px);
-}
-
-.settings-page {
-  padding-bottom: max(7rem, env(safe-area-inset-bottom));
+  .mobile-page { padding-inline: var(--app-gutter-desktop); }
 }
 
 @media (min-width: 768px) {
-  .app-page {
-    padding: 1.5rem 1.5rem 2rem;
-  }
-
-  .app-page-title {
-    font-size: 1.875rem;
-  }
-
+  .app-page { padding: 1.75rem 1.5rem 2rem; }
+  .app-page-title { font-size: 2.5rem; }
   .app-page-header {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
-
   .app-page-actions {
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
   }
-
   .mobile-action-bar {
     position: static;
     flex-direction: row;
@@ -325,22 +359,11 @@ html {
     box-shadow: none;
     backdrop-filter: none;
   }
-
-  .settings-page {
-    padding-bottom: 1.5rem;
-  }
-}
-
-button,
-a,
-input,
-select,
-textarea {
-  touch-action: manipulation;
+  .settings-page { padding-bottom: 1.5rem; }
 }
 
 :focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--color-primary, #f53d2d) 70%, white);
+  outline: 3px solid color-mix(in srgb, var(--color-primary-active) 72%, white);
   outline-offset: 2px;
 }
 

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#ee4d2d" />
+    <meta name="theme-color" content="#FAF9F5" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="OPS FTE" />
@@ -17,6 +17,8 @@
     <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144.png" />
     <title>OPS FTE</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=EB+Garamond:wght@400;500&display=swap');
+
       :root {
         color: #17212b;
         background: #f3f5f7;
@@ -278,6 +280,79 @@
           transform: translateY(1px);
         }
       }
+
+      :root {
+        color: #141413;
+        background: #faf9f5;
+        font-family: "Be Vietnam Pro", Inter, "Segoe UI", sans-serif;
+      }
+
+      body { background: #faf9f5; }
+
+      .launcher-card {
+        background: #efe9de;
+        border-color: #e6dfd8;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(20, 20, 19, 0.08);
+      }
+
+      .top-rail { height: 5px; background: #cc785c; }
+      .app-icon { border-radius: 12px; box-shadow: none; }
+      .app-name, h1 { color: #141413; }
+
+      .app-type,
+      .instructions,
+      .route-copy,
+      .privacy-note {
+        color: #6c6a64;
+        font-family: "Be Vietnam Pro", Inter, "Segoe UI", sans-serif;
+      }
+
+      .eyebrow { color: #955038; }
+
+      h1 {
+        font-family: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+        font-size: clamp(2.35rem, 10vw, 3.35rem);
+        font-stretch: normal;
+        font-weight: 400;
+        line-height: 1.02;
+        letter-spacing: -0.035em;
+      }
+
+      .route {
+        background: #f5f0e8;
+        border-color: #e6dfd8;
+        border-radius: 10px;
+      }
+
+      .route-line {
+        background: repeating-linear-gradient(to bottom, #cc785c 0 4px, transparent 4px 8px);
+      }
+
+      .route-line::before,
+      .route-line::after {
+        border-color: #cc785c;
+        background: #faf9f5;
+      }
+
+      .route-line::after { background: #cc785c; }
+
+      .launch-button {
+        color: #141413;
+        background: #cc785c;
+        border-color: #cc785c;
+        border-radius: 10px;
+        box-shadow: none;
+        font-weight: 650;
+      }
+
+      .launch-button:hover {
+        color: #fff;
+        background: #a9583e;
+        border-color: #a9583e;
+      }
+
+      .launch-button:focus-visible { outline-color: rgba(169, 88, 62, 0.32); }
     </style>
   </head>
   <body>
