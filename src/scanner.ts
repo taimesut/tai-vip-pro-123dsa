@@ -112,7 +112,7 @@ async function handleSelectedImage(file: File) {
     if (!active) return;
     setReadyState();
     statusText.textContent =
-      "Không tìm thấy mã QR/Barcode. Hãy chọn hoặc chụp ảnh rõ hơn rồi thử lại.";
+      "Không đọc được mã QR/Barcode. Hãy đưa mã chiếm phần lớn khung hình hoặc cắt ảnh sát mã rồi thử lại.";
   }
 }
 

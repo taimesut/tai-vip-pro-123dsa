@@ -54,7 +54,7 @@ export default function EmbeddedQRScanner({
       showToast("Đã đọc mã từ ảnh.", "success");
     } catch {
       showToast(
-        "Không tìm thấy mã QR/Barcode trong ảnh. Hãy chọn hoặc chụp ảnh rõ hơn rồi thử lại.",
+        "Không đọc được mã QR/Barcode trong ảnh này. Hãy đưa mã chiếm phần lớn khung hình hoặc cắt ảnh sát mã rồi thử lại.",
         "warning",
       );
     } finally {
