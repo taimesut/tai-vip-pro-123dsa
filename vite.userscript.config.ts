@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-const defaultUserscriptVersion = "0.4.1";
+const defaultUserscriptVersion = "0.4.2";
 const userscriptVersion =
   process.env.OPS_FTE_USERSCRIPT_VERSION?.trim() || defaultUserscriptVersion;
 
@@ -20,6 +20,7 @@ const metadata = `// ==UserScript==
 // @connect      script.googleusercontent.com
 // @connect      docs.google.com
 // @connect      accounts.google.com
+// @connect      license.nguyenthanhtaiabcxyz.workers.dev
 // ==/UserScript==`;
 
 const runtimeShim =
