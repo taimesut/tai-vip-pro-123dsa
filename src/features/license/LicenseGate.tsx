@@ -12,6 +12,7 @@ import {
 
 interface LicenseGateProps {
   children: ReactNode;
+  onRequestClose?: () => void;
 }
 
 type GateState = "checking" | "ready" | "license" | "blocked" | "error";
@@ -92,7 +93,7 @@ const severityClass = (system?: LicenseSystemControl): string => {
   return "ops-license-system-info";
 };
 
-export const LicenseGate = ({ children }: LicenseGateProps) => {
+export const LicenseGate = ({ children, onRequestClose }: LicenseGateProps) => {
   const [state, setState] = useState<GateState>("checking");
   const [result, setResult] = useState<LicenseVerifyResult | null>(null);
   const [licenseKey, setLicenseKey] = useState(() => getStoredLicenseKey());
@@ -191,9 +192,21 @@ export const LicenseGate = ({ children }: LicenseGateProps) => {
     [result],
   );
 
+  const closeGateButton = onRequestClose ? (
+    <button
+      type="button"
+      className="ops-license-close"
+      aria-label="Đóng OPS FTE"
+      onClick={onRequestClose}
+    >
+      Đóng
+    </button>
+  ) : null;
+
   if (state === "checking") {
     return (
       <div className="ops-license-page">
+        {closeGateButton}
         <div className="ops-license-card">
           <div className="ops-license-mark">OPS</div>
           <p className="ops-license-kicker">OPS FTE</p>
@@ -209,6 +222,7 @@ export const LicenseGate = ({ children }: LicenseGateProps) => {
     const system = result?.system;
     return (
       <div className="ops-license-page">
+        {closeGateButton}
         <div className="ops-license-card ops-license-card-blocked">
           <div className="ops-license-mark">!</div>
           <p className="ops-license-kicker">OPS FTE</p>
@@ -245,6 +259,7 @@ export const LicenseGate = ({ children }: LicenseGateProps) => {
   if (state === "license" || state === "error") {
     return (
       <div className="ops-license-page">
+        {closeGateButton}
         <div className="ops-license-card">
           <div className="ops-license-mark">OPS</div>
           <p className="ops-license-kicker">OPS FTE</p>
