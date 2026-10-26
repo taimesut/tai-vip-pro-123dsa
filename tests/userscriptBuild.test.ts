@@ -29,7 +29,8 @@ test("userscript enforces OPS FTE license through License Center", async () => {
   assert.match(clientSource, /GM_xmlhttpRequest/);
   assert.match(clientSource, /\/api\/v1\/verify/);
   assert.match(clientSource, /MAX_CACHE_SECONDS = 300/);
-  assert.match(appSource, /<LicenseGate>/);
+  assert.match(appSource, /<LicenseGate\b/);
+  assert.match(gateSource, /aria-label="Đóng OPS FTE"/);
   assert.match(gateSource, /SYSTEM_BLOCKED/);
   assert.match(gateSource, /5 \* 60 \* 1000/);
 });
