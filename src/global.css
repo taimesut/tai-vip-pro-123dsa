@@ -392,6 +392,28 @@ label,
   color: var(--color-ink);
 }
 
+.ops-license-close {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: 0.75rem;
+  z-index: 4;
+  min-height: 2.5rem;
+  border: 1px solid var(--color-hairline);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--color-base-100) 94%, transparent);
+  padding: 0 0.8rem;
+  color: var(--color-muted);
+  font: 700 0.75rem/1 var(--font-sans);
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgb(20 20 19 / 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.ops-license-close:hover {
+  color: var(--color-primary-text);
+  border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-hairline));
+}
+
 .ops-license-card {
   width: min(100%, 26rem);
   border: 1px solid var(--color-hairline);
