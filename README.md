@@ -9,6 +9,37 @@ Bộ công cụ hỗ trợ vận hành SPX/SOC. Bản phân phối chính là us
 - Đọc QR/Barcode bằng cách chọn ảnh hoặc chụp ảnh; không quét camera realtime.
 - Tạo biên bản sự vụ và ghi log qua Apps Script.
 
+## License Center
+
+Bản Violentmonkey dùng License Center chung:
+
+```text
+Product code: OPSFTE
+License prefix: OPS
+Endpoint: https://license.nguyenthanhtaiabcxyz.workers.dev/api/v1/verify
+```
+
+Khi mở OPS FTE lần đầu, nhập key dạng:
+
+```text
+OPS-XXXX-XXXX-XXXX
+```
+
+License được gắn với một `device_id` lưu trong `localStorage` của SPX trên trình duyệt hiện tại.
+
+OPS FTE kiểm tra lại License Center tối đa mỗi 5 phút và hỗ trợ các trạng thái vận hành:
+
+- `NOTICE`: hiện thông báo nhưng vẫn dùng được.
+- `DEGRADED`: hiện cảnh báo hệ thống đang hạn chế.
+- `MAINTENANCE`: hiển thị bảo trì; có thể khóa toàn bộ ứng dụng bằng `block_usage`.
+- `INCIDENT`: hiển thị sự cố; có thể khóa toàn bộ ứng dụng.
+- `DISABLED`: khóa sử dụng.
+- `NORMAL`: hoạt động bình thường.
+
+Thứ tự ưu tiên của License Center là `LICENSE > PRODUCT > GLOBAL`.
+
+Violentmonkey metadata có `@connect license.nguyenthanhtaiabcxyz.workers.dev` và client ưu tiên `GM_xmlhttpRequest` để việc kiểm tra license không phụ thuộc CSP của trang SPX.
+
 ## Build local
 
 ```bash
