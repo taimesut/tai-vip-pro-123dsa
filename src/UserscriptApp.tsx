@@ -17,7 +17,7 @@ interface UserscriptAppProps {
 export const UserscriptApp = ({ onRequestClose }: UserscriptAppProps) => {
   return (
     <div id="ops-fte-userscript-app" data-ops-fte-theme-root data-theme="light">
-      <LicenseGate>
+      <LicenseGate onRequestClose={onRequestClose}>
         <MemoryRouter>
           <ToastContainer />
           <MobileLayout onRequestClose={onRequestClose}>
