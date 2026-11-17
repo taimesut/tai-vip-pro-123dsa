@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
-import { History, Mail, MessagesSquare, Phone } from "lucide-react";
+import { ArrowUpRight, Download, History, Mail, MessagesSquare, Phone, RefreshCw } from "lucide-react";
 import {
   loadAppVersionInfo,
   type AppVersionInfo,
 } from "../utils/appVersion";
+import {
+  GITHUB_INSTALL_URL,
+  GITHUB_RELEASES_URL,
+  isGitHubVersionNewer,
+  loadLatestGitHubRelease,
+  type GitHubReleaseInfo,
+} from "../utils/githubUpdates";
 
 // Exact Official Zalo Brand SVG Icon provided by User
 const ZaloIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
@@ -58,6 +65,22 @@ const ZaloIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
 export const HomePage = () => {
   const [versionInfo, setVersionInfo] = useState<AppVersionInfo | null>(null);
   const [versionLoading, setVersionLoading] = useState(true);
+  const [latestRelease, setLatestRelease] = useState<GitHubReleaseInfo | null>(null);
+  const [checkingUpdates, setCheckingUpdates] = useState(false);
+  const [updateError, setUpdateError] = useState("");
+
+  const checkGitHubUpdates = async () => {
+    setCheckingUpdates(true);
+    setUpdateError("");
+    try {
+      setLatestRelease(await loadLatestGitHubRelease());
+    } catch (error) {
+      setLatestRelease(null);
+      setUpdateError(error instanceof Error ? error.message : "Không thể kiểm tra GitHub.");
+    } finally {
+      setCheckingUpdates(false);
+    }
+  };
 
   useEffect(() => {
     let active = true;
@@ -149,6 +172,50 @@ export const HomePage = () => {
               Bản phát triển
             </p>
           )}
+          <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-base-300/60 pt-3">
+            <button
+              type="button"
+              onClick={() => void checkGitHubUpdates()}
+              disabled={checkingUpdates}
+              className="btn btn-outline btn-sm min-h-10 touch-manipulation gap-1.5 rounded-xl"
+            >
+              <RefreshCw className={`h-4 w-4 ${checkingUpdates ? "animate-spin" : ""}`} aria-hidden="true" />
+              {checkingUpdates ? "Đang kiểm tra..." : "Kiểm tra cập nhật"}
+            </button>
+            <a
+              href={GITHUB_RELEASES_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-10 items-center gap-1 text-xs font-semibold text-primary hover:underline"
+            >
+              GitHub Releases <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
+          </div>
+          {updateError ? (
+            <p role="alert" className="mt-2 text-xs text-error">{updateError}</p>
+          ) : null}
+          {latestRelease ? (
+            <div className="mt-2 space-y-2 text-xs text-base-content/75" aria-live="polite">
+              <p>
+                {versionInfo?.version
+                  ? isGitHubVersionNewer(latestRelease.version, versionInfo.version)
+                    ? `Có phiên bản mới: v${latestRelease.version} (đang dùng v${versionInfo.version})`
+                    : `Phiên bản đã cập nhật: v${versionInfo.version}`
+                  : `Phiên bản mới nhất trên GitHub: v${latestRelease.version}`}
+              </p>
+              {(!versionInfo?.version || isGitHubVersionNewer(latestRelease.version, versionInfo.version)) ? (
+                <a
+                  href={GITHUB_INSTALL_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary btn-sm min-h-10 w-full touch-manipulation gap-1.5 rounded-xl"
+                >
+                  <Download className="h-4 w-4" aria-hidden="true" />
+                  Cài / cập nhật từ GitHub
+                </a>
+              ) : null}
+            </div>
+          ) : null}
         </section>
 
         {/* Email Footer */}
