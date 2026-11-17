@@ -6,10 +6,14 @@ const defaultUserscriptVersion = "0.4.2";
 const userscriptVersion =
   process.env.OPS_FTE_USERSCRIPT_VERSION?.trim() || defaultUserscriptVersion;
 
+const releaseBaseUrl = "https://github.com/taimesut/tai-vip-pro-123dsa/releases/latest/download";
+
 const metadata = `// ==UserScript==
 // @name         OPS FTE
 // @namespace    https://github.com/taimesut/OPS-FTE
 // @version      ${userscriptVersion}
+// @updateURL    ${releaseBaseUrl}/ops-fte.meta.js
+// @downloadURL  ${releaseBaseUrl}/ops-fte.user.js
 // @description  OPS FTE chạy trực tiếp trong SPX bằng phiên đăng nhập hiện tại
 // @match        https://spx.shopee.vn/*
 // @match        https://*.spx.shopee.vn/*
@@ -21,6 +25,7 @@ const metadata = `// ==UserScript==
 // @connect      docs.google.com
 // @connect      accounts.google.com
 // @connect      license.nguyenthanhtaiabcxyz.workers.dev
+// @connect      api.github.com
 // ==/UserScript==`;
 
 const runtimeShim =
