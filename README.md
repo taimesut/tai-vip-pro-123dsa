@@ -40,29 +40,40 @@ Thứ tự ưu tiên của License Center là `LICENSE > PRODUCT > GLOBAL`.
 
 Violentmonkey metadata có `@connect license.nguyenthanhtaiabcxyz.workers.dev` và client ưu tiên `GM_xmlhttpRequest` để việc kiểm tra license không phụ thuộc CSP của trang SPX.
 
+## Cài đặt và cập nhật qua GitHub
+
+**Link cài đặt/cập nhật cố định:** [Cài OPS FTE (.user.js)](https://github.com/taimesut/tai-vip-pro-123dsa/releases/latest/download/ops-fte.user.js)
+
+**Xem lịch sử phiên bản:** [GitHub Releases](https://github.com/taimesut/tai-vip-pro-123dsa/releases)
+
+1. Mở link cài đặt bằng trình duyệt có Violentmonkey.
+2. Xác nhận cài đặt userscript. Cấu hình SOC và license lưu tại trình duyệt không bị xóa khi cập nhật cùng script.
+3. Các lần sau Violentmonkey có thể tự kiểm tra bản mới dựa trên `@updateURL` và tải bằng `@downloadURL` (tùy thiết lập chu kỳ cập nhật của Violentmonkey).
+4. Ngay trong **Trang chủ → Kiểm tra cập nhật** cũng có thể so sánh phiên bản hiện tại với GitHub Release và mở link cài bản mới.
+
+**Lưu ý:** Các bản cũ chưa có `@updateURL` / `@downloadURL` cần cài lại **một lần** qua link cố định sau khi phát hành bản GitHub đầu tiên. Metadata giữ nguyên `@name` và `@namespace` cũ để Violentmonkey cập nhật script hiện tại, tránh cài thành bản khác.
+
+## Phát hành bản mới qua GitHub Actions
+
+Workflow chỉ chạy thủ công và chỉ phát hành khi build/test thành công:
+
+1. Vào [Actions → Build and Publish Violentmonkey Userscript](https://github.com/taimesut/tai-vip-pro-123dsa/actions/workflows/build-userscript.yml).
+2. Nhấn **Run workflow**, chọn nhánh `main`.
+3. Để trống `version` để tự tăng patch (ví dụ `0.4.2` → `0.4.3`) hoặc nhập `x.y.z` cao hơn bản Release mới nhất.
+4. Có thể nhập `release_notes` để ghi nội dung cập nhật.
+5. Sau khi chạy thành công, Action tạo một GitHub Release chứa trực tiếp `ops-fte.user.js` và `ops-fte.meta.js`. Link **latest/download** không đổi giữa các lần phát hành.
+
+Artifact ZIP trong Actions vẫn được lưu 30 ngày để dự phòng, **không phải** nguồn cập nhật. GitHub Release mới là nguồn phân phối lâu dài. Nếu chưa chạy workflow lần đầu thì link cài bản mới nhất chưa tồn tại.
+
 ## Build local
 
 ```bash
 npm ci
+npm run test:userscript
 npm run build:userscript
 ```
 
-File kết quả:
-
-```text
-userscript-dist/ops-fte.user.js
-```
-
-## Build thủ công trên GitHub Actions
-
-Workflow không tự chạy khi push.
-
-1. Vào **Actions**.
-2. Chọn **Build Violentmonkey Userscript**.
-3. Nhấn **Run workflow**.
-4. Có thể nhập version hoặc để trống.
-5. Tải artifact `ops-fte-violentmonkey-...`.
-6. Giải nén và cài `ops-fte.user.js` bằng Violentmonkey.
+Kết quả: `userscript-dist/ops-fte.user.js`. Build local để thử nghiệm, không tự tạo GitHub Release.
 
 ## Cấu trúc chính
 
