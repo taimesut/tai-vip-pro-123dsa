@@ -139,7 +139,24 @@ function setupSpaNavigationWatch() {
   });
 }
 
+// Remove legacy License Center credentials after updating older OPS FTE installations.
+// Only OPS FTE-specific keys are touched; SOC settings are preserved.
+function clearLegacyLicenseStorage() {
+  try {
+    for (const key of [
+      "opsFteLicenseKey",
+      "opsFteLicenseDeviceId",
+      "opsFteLicenseCache",
+    ]) {
+      localStorage.removeItem(key);
+    }
+  } catch {
+    // SPX storage might be unavailable; never block app startup.
+  }
+}
+
 function bootstrap() {
+  clearLegacyLicenseStorage();
   ensureMounted();
   setupSpaNavigationWatch();
 }
