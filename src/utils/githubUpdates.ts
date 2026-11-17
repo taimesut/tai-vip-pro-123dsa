@@ -73,9 +73,11 @@ const loadReleaseJson = async (): Promise<unknown> => {
     timeout: 12000,
   };
 
-  if (typeof GM_xmlhttpRequest === "function") {
+  const gmRequest =
+    typeof GM_xmlhttpRequest === "function" ? GM_xmlhttpRequest : null;
+  if (gmRequest) {
     return new Promise((resolve, reject) => {
-      GM_xmlhttpRequest({
+      gmRequest({
         ...options,
         onload(response) {
           if (response.status === 404) {
