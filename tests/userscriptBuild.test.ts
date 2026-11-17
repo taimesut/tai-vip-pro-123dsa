@@ -10,10 +10,10 @@ test("userscript metadata is self-contained for manual Violentmonkey install", a
   assert.match(source, /OPS_FTE_USERSCRIPT_VERSION/);
   assert.match(source, /fileName:\s*\(\) => "ops-fte\.user\.js"/);
   assert.match(source, /@grant\s+GM_xmlhttpRequest/);
-  assert.match(source, /@updateURL\\s+\\$\\{releaseBaseUrl\\}\\/ops-fte\\.meta\\.js/);
-  assert.match(source, /@downloadURL\\s+\\$\\{releaseBaseUrl\\}\\/ops-fte\\.user\\.js/);
-  assert.match(source, /tai-vip-pro-123dsa\\/releases\\/latest\\/download/);
-  assert.match(source, /@namespace\\s+https:\\/\\/github\\.com\\/taimesut\\/OPS-FTE/);
+  assert.match(source, /@updateURL\s+\$\{releaseBaseUrl\}\/ops-fte\.meta\.js/);
+  assert.match(source, /@downloadURL\s+\$\{releaseBaseUrl\}\/ops-fte\.user\.js/);
+  assert.match(source, /tai-vip-pro-123dsa\/releases\/latest\/download/);
+  assert.match(source, /@namespace\s+https:\/\/github\.com\/taimesut\/OPS-FTE/);
 });
 
 test("userscript enforces OPS FTE license through License Center", async () => {
@@ -90,11 +90,11 @@ test("GitHub Action is manual-only and uploads one Violentmonkey userscript arti
 
 test("GitHub workflow publishes a versioned release and metadata without auto-build on push", async () => {
   const workflow = await readSource("../.github/workflows/build-userscript.yml");
-  assert.match(workflow, /permissions:\\n  contents: write/);
+  assert.match(workflow, /permissions:\n  contents: write/);
   assert.match(workflow, /concurrency:/);
   assert.match(workflow, /gh release view/);
   assert.match(workflow, /gh release create/);
-  assert.match(workflow, /ops-fte\\.meta\\.js/);
+  assert.match(workflow, /ops-fte\.meta\.js/);
   assert.match(workflow, /--latest/);
-  assert.doesNotMatch(workflow, /\\bpush:/);
+  assert.doesNotMatch(workflow, /\bpush:/);
 });
