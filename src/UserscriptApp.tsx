@@ -8,7 +8,6 @@ import { LayMaTOPage } from "./pages/LayMaTOPage";
 import { TaoBienBanSuVuPage } from "./pages/TaoBienBanSuVuPage";
 import { TaoMaQRPage } from "./pages/TaoMaQRPage";
 import { ToastContainer } from "./components/Toast";
-import { LicenseGate } from "./features/license/LicenseGate";
 
 interface UserscriptAppProps {
   onRequestClose?: () => void;
@@ -17,8 +16,7 @@ interface UserscriptAppProps {
 export const UserscriptApp = ({ onRequestClose }: UserscriptAppProps) => {
   return (
     <div id="ops-fte-userscript-app" data-ops-fte-theme-root data-theme="light">
-      <LicenseGate onRequestClose={onRequestClose}>
-        <MemoryRouter>
+      <MemoryRouter>
           <ToastContainer />
           <MobileLayout onRequestClose={onRequestClose}>
             <Routes>
@@ -32,8 +30,7 @@ export const UserscriptApp = ({ onRequestClose }: UserscriptAppProps) => {
               <Route path="*" element={<HomePage />} />
             </Routes>
           </MobileLayout>
-        </MemoryRouter>
-      </LicenseGate>
+      </MemoryRouter>
     </div>
   );
 };
