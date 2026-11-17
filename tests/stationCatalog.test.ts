@@ -103,6 +103,26 @@ test("loads SOC and Hub data from the embedded userscript catalog", async () => 
   assert.ok(hubs.every(({ stationCode }) => stationCode.startsWith("63")));
 });
 
+test("Pleiku SOC includes the cross-province Ea Hleo 02 Hub", async () => {
+  const expected = {
+    stationName: "45-DLK Ea Hleo 02 Hub",
+    stationCode: "45DLK22",
+    id: "2106",
+  };
+  const [pleikuHubs, bmtHubs] = await Promise.all([
+    loadStationHubs("1030"),
+    loadStationHubs("725"),
+  ]);
+
+  assert.equal(pleikuHubs.length, 25);
+  assert.deepEqual(pleikuHubs.find(({ id }) => id === expected.id), expected);
+  assert.deepEqual(bmtHubs.find(({ id }) => id === expected.id), expected);
+  assert.equal(
+    pleikuHubs.filter(({ id }) => id === expected.id).length,
+    1,
+  );
+});
+
 test("embedded catalog has no Google Apps Script dependency", async () => {
   const source = await readFile(
     new URL("../src/utils/stationCatalog.ts", import.meta.url),
