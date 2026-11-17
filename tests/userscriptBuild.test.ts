@@ -16,26 +16,26 @@ test("userscript metadata is self-contained for manual Violentmonkey install", a
   assert.match(source, /@namespace\s+https:\/\/github\.com\/taimesut\/OPS-FTE/);
 });
 
-test("userscript enforces OPS FTE license through License Center", async () => {
-  const [metadata, appSource, clientSource, gateSource] = await Promise.all([
+test("userscript opens without License Center or a license key", async () => {
+  const [metadata, appSource, userscriptSource, cssSource] = await Promise.all([
     readSource("../vite.userscript.config.ts"),
     readSource("../src/UserscriptApp.tsx"),
-    readSource("../src/features/license/licenseClient.ts"),
-    readSource("../src/features/license/LicenseGate.tsx"),
+    readSource("../src/userscript.tsx"),
+    readSource("../src/global.css"),
   ]);
 
-  assert.match(
-    metadata,
-    /@connect\s+license\.nguyenthanhtaiabcxyz\.workers\.dev/,
-  );
-  assert.match(clientSource, /PRODUCT_CODE = "OPSFTE"/);
-  assert.match(clientSource, /GM_xmlhttpRequest/);
-  assert.match(clientSource, /\/api\/v1\/verify/);
-  assert.match(clientSource, /MAX_CACHE_SECONDS = 300/);
-  assert.match(appSource, /<LicenseGate\b/);
-  assert.match(gateSource, /aria-label="Đóng OPS FTE"/);
-  assert.match(gateSource, /SYSTEM_BLOCKED/);
-  assert.match(gateSource, /5 \* 60 \* 1000/);
+  assert.doesNotMatch(metadata, /license\.nguyenthanhtaiabcxyz\.workers\.dev/);
+  assert.doesNotMatch(appSource, /LicenseGate|verifyLicense|activateLicense/);
+  assert.match(appSource, /<MobileLayout onRequestClose=\{onRequestClose\}>/);
+  assert.doesNotMatch(cssSource, /ops-license-/);
+
+  // The migration removes only stale OPS FTE-specific credentials.
+  assert.match(userscriptSource, /clearLegacyLicenseStorage\(\)/);
+  for (const key of ["opsFteLicenseKey", "opsFteLicenseDeviceId", "opsFteLicenseCache"]) {
+    assert.ok(userscriptSource.includes(key));
+  }
+  assert.match(userscriptSource, /localStorage\.removeItem\(key\)/);
+  assert.doesNotMatch(userscriptSource, /localStorage\.clear\(\)/);
 });
 
 test("userscript can call and confirm the Google Apps Script incident webhook", async () => {
