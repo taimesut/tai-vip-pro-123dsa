@@ -17,19 +17,19 @@ export const UserscriptApp = ({ onRequestClose }: UserscriptAppProps) => {
   return (
     <div id="ops-fte-userscript-app" data-ops-fte-theme-root data-theme="light">
       <MemoryRouter>
-          <ToastContainer />
-          <MobileLayout onRequestClose={onRequestClose}>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/check-sot/ngoai-tinh" element={<CheckSotNgoaiTinhPage />} />
-              <Route path="/check-sot/noi-tinh" element={<CheckSotNoiTinhPage />} />
-              <Route path="/cai-dat" element={<SettingsPage />} />
-              <Route path="/tao-bien-ban-su-vu" element={<TaoBienBanSuVuPage />} />
-              <Route path="/lay-ma-to" element={<LayMaTOPage />} />
-              <Route path="/tao-ma-qr" element={<TaoMaQRPage />} />
-              <Route path="*" element={<HomePage />} />
-            </Routes>
-          </MobileLayout>
+        <ToastContainer />
+        <MobileLayout onRequestClose={onRequestClose}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/check-sot/ngoai-tinh" element={<CheckSotNgoaiTinhPage />} />
+            <Route path="/check-sot/noi-tinh" element={<CheckSotNoiTinhPage />} />
+            <Route path="/cai-dat" element={<SettingsPage />} />
+            <Route path="/tao-bien-ban-su-vu" element={<TaoBienBanSuVuPage />} />
+            <Route path="/lay-ma-to" element={<LayMaTOPage />} />
+            <Route path="/tao-ma-qr" element={<TaoMaQRPage />} />
+            <Route path="*" element={<HomePage />} />
+          </Routes>
+        </MobileLayout>
       </MemoryRouter>
     </div>
   );
