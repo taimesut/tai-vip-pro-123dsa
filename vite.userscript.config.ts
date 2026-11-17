@@ -24,7 +24,6 @@ const metadata = `// ==UserScript==
 // @connect      script.googleusercontent.com
 // @connect      docs.google.com
 // @connect      accounts.google.com
-// @connect      license.nguyenthanhtaiabcxyz.workers.dev
 // @connect      api.github.com
 // ==/UserScript==`;
 
