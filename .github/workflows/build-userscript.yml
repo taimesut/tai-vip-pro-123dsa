@@ -1,15 +1,23 @@
-name: Build Violentmonkey Userscript
+name: Build and Publish Violentmonkey Userscript
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version tùy chọn, ví dụ 0.4.70 (để trống sẽ tự tạo)"
+        description: "Phiên bản x.y.z (để trống để tăng patch từ GitHub Release mới nhất)"
+        required: false
+        type: string
+      release_notes:
+        description: "Nội dung cập nhật (không bắt buộc)"
         required: false
         type: string
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: ops-fte-userscript-release
+  cancel-in-progress: false
 
 jobs:
   build-userscript:
@@ -30,34 +38,77 @@ jobs:
       - name: Test userscript
         run: npm run test:userscript
 
-      - name: Resolve version
+      - name: Resolve next release version
         id: version
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED_VERSION: ${{ inputs.version }}
         run: |
-          requested="${{ inputs.version }}"
-          if [ -n "$requested" ]; then
-            version="$requested"
-          else
-            version="0.4.${GITHUB_RUN_NUMBER}"
-          fi
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+          latest_tag="$(gh release view --json tagName --jq '.tagName' 2>/dev/null || true)"
+          LATEST_TAG="$latest_tag" node --input-type=module -e '
+            const parse = (text) => {
+              const match = /^v?(\d+)\.(\d+)\.(\d+)$/.exec(text.trim());
+              if (!match) throw new Error("Phiên bản phải theo định dạng x.y.z");
+              return match.slice(1).map(Number);
+            };
+            const previous = parse(process.env.LATEST_TAG || "0.4.2");
+            const requested = process.env.REQUESTED_VERSION?.trim() || "";
+            let next;
+            if (requested) {
+              next = parse(requested);
+              for (let i = 0; i < 3; i += 1) {
+                if (next[i] > previous[i]) break;
+                if (next[i] < previous[i] || i === 2) {
+                  throw new Error("Phiên bản mới phải lớn hơn GitHub Release hiện tại.");
+                }
+              }
+            } else {
+              next = [previous[0], previous[1], previous[2] + 1];
+            }
+            process.stdout.write("version=" + next.join(".") + "\n");
+          ' >> "$GITHUB_OUTPUT"
 
       - name: Build Violentmonkey userscript
         env:
           OPS_FTE_USERSCRIPT_VERSION: ${{ steps.version.outputs.version }}
         run: npm run build:userscript
 
-      - name: Verify userscript
+      - name: Generate update metadata
         shell: bash
         run: |
-          test -f userscript-dist/ops-fte.user.js
-          grep -F "// ==UserScript==" userscript-dist/ops-fte.user.js
-          grep -F "@version      ${{ steps.version.outputs.version }}" userscript-dist/ops-fte.user.js
+          set -euo pipefail
+          test -s userscript-dist/ops-fte.user.js
+          sed -n '/^\/\/ ==UserScript==/,/^\/\/ ==\/UserScript==/p' \
+            userscript-dist/ops-fte.user.js > userscript-dist/ops-fte.meta.js
+          test -s userscript-dist/ops-fte.meta.js
+          grep -F "// ==/UserScript==" userscript-dist/ops-fte.meta.js
+          grep -F "@version      ${{ steps.version.outputs.version }}" userscript-dist/ops-fte.meta.js
+          grep -F "@updateURL" userscript-dist/ops-fte.meta.js
+          grep -F "@downloadURL" userscript-dist/ops-fte.meta.js
 
-      - name: Upload userscript
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: ops-fte-violentmonkey-${{ steps.version.outputs.version }}
-          path: userscript-dist/ops-fte.user.js
+          path: |
+            userscript-dist/ops-fte.user.js
+            userscript-dist/ops-fte.meta.js
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish GitHub Release (stable update links)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_NOTES: ${{ inputs.release_notes }}
+        run: |
+          set -euo pipefail
+          notes="${RELEASE_NOTES:-Cập nhật OPS FTE.}"
+          gh release create "v${{ steps.version.outputs.version }}" \
+            userscript-dist/ops-fte.user.js \
+            userscript-dist/ops-fte.meta.js \
+            --title "OPS FTE v${{ steps.version.outputs.version }}" \
+            --notes "$notes" \
+            --latest
