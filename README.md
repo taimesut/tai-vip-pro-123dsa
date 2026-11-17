@@ -9,36 +9,7 @@ Bộ công cụ hỗ trợ vận hành SPX/SOC. Bản phân phối chính là us
 - Đọc QR/Barcode bằng cách chọn ảnh hoặc chụp ảnh; không quét camera realtime.
 - Tạo biên bản sự vụ và ghi log qua Apps Script.
 
-## License Center
-
-Bản Violentmonkey dùng License Center chung:
-
-```text
-Product code: OPSFTE
-License prefix: OPS
-Endpoint: https://license.nguyenthanhtaiabcxyz.workers.dev/api/v1/verify
-```
-
-Khi mở OPS FTE lần đầu, nhập key dạng:
-
-```text
-OPS-XXXX-XXXX-XXXX
-```
-
-License được gắn với một `device_id` lưu trong `localStorage` của SPX trên trình duyệt hiện tại.
-
-OPS FTE kiểm tra lại License Center tối đa mỗi 5 phút và hỗ trợ các trạng thái vận hành:
-
-- `NOTICE`: hiện thông báo nhưng vẫn dùng được.
-- `DEGRADED`: hiện cảnh báo hệ thống đang hạn chế.
-- `MAINTENANCE`: hiển thị bảo trì; có thể khóa toàn bộ ứng dụng bằng `block_usage`.
-- `INCIDENT`: hiển thị sự cố; có thể khóa toàn bộ ứng dụng.
-- `DISABLED`: khóa sử dụng.
-- `NORMAL`: hoạt động bình thường.
-
-Thứ tự ưu tiên của License Center là `LICENSE > PRODUCT > GLOBAL`.
-
-Violentmonkey metadata có `@connect license.nguyenthanhtaiabcxyz.workers.dev` và client ưu tiên `GM_xmlhttpRequest` để việc kiểm tra license không phụ thuộc CSP của trang SPX.
+OPS FTE không yêu cầu License Key hoặc xác thực License Center. Bản userscript mới tự dọn dữ liệu license cũ trong trình duyệt mà không ảnh hưởng cấu hình SOC.
 
 ## Cài đặt và cập nhật qua GitHub
 
@@ -47,7 +18,7 @@ Violentmonkey metadata có `@connect license.nguyenthanhtaiabcxyz.workers.dev` v
 **Xem lịch sử phiên bản:** [GitHub Releases](https://github.com/taimesut/tai-vip-pro-123dsa/releases)
 
 1. Mở link cài đặt bằng trình duyệt có Violentmonkey.
-2. Xác nhận cài đặt userscript. Cấu hình SOC và license lưu tại trình duyệt không bị xóa khi cập nhật cùng script.
+2. Xác nhận cài đặt userscript. Cấu hình SOC lưu tại trình duyệt được giữ nguyên khi cập nhật cùng script. License Key cũ, thiết bị đã kích hoạt và bộ nhớ đệm license sẽ được xóa.
 3. Các lần sau Violentmonkey có thể tự kiểm tra bản mới dựa trên `@updateURL` và tải bằng `@downloadURL` (tùy thiết lập chu kỳ cập nhật của Violentmonkey).
 4. Ngay trong **Trang chủ → Kiểm tra cập nhật** cũng có thể so sánh phiên bản hiện tại với GitHub Release và mở link cài bản mới.
 
